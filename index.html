@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=700, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico">
     <title>Puyo Puyo | www.sergiosoriano.com </title>
 </head>
@@ -16,18 +16,37 @@
 <style>
     body,
     html {
-        height: 100%;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        font-family: Arial, Helvetica, sans-serif;
     }
     
     body {
-        margin: 0px;
-        padding: 0px;
-        width: 100%;
+        height: 100%;
         background-color: #4054b2;
     }
     
+    .flex-row {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .flex-1 {
+        flex: 1;
+    }
+    
+    .flex-2 {
+        flex: 2;
+    }
+    
+    .container {
+        width: 100%;
+        height: 100%;
+    }
+    
     .info {
-        position: absolute;
+        float: right;
         padding: 50px 10px;
         width: 185px;
     }
@@ -37,14 +56,12 @@
         width: 100%;
         margin: 5px 0px;
         padding: 0px;
-        font-family: Arial, Helvetica, sans-serif;
         font-size: 30px;
         font-weight: bold;
         color: white;
     }
     
     .info canvas {
-        float: left;
         margin: 0px;
         padding: 0px;
         width: 100%;
@@ -54,34 +71,27 @@
         border-color: #192d8d;
     }
     
-    .info div {
-        margin-top: 0px;
-        padding: 0px;
-        height: 100%;
-    }
-    
     .info div * {
+        width: 100%;
         font-size: 20px;
-        margin-top: 5px;
-        margin-left: 2px;
-        width: calc(50% - 6px);
-        vertical-align: middle;
+        margin: 2px 4px 0px 0px;
+        padding: 0px;
     }
     
     .info a {
-        margin: 15px;
+        margin: 0px;
     }
     
     .board {
         display: flex;
         align-items: center;
         margin: auto;
-        width: 288px;
         height: 100%;
     }
     
     .board canvas {
-        margin: 0px;
+        margin-left: auto;
+        margin-right: auto;
         padding: 0px;
         width: 288px;
         height: 576px;
@@ -101,23 +111,34 @@
 
 <body>
 
-    <div class="info">
-        <p id="score"></p>
-        <p>Next:</p>
-        <canvas id="next"></canvas>
-        <div>
-            <p>Columns</p>
-            <input id="columns" type="number">
-        </div>
-        <div>
-            <input id="restart" type="button" value="Restart">
-            <input id="random" type="button" value="Random">
-        </div>
-        <a href="https://www.sergiosoriano.com">www.sergiosoriano.com</a>
-    </div>
+    <div class="flex-row container">
 
-    <div class="board">
-        <canvas id="canvas"></canvas>
+        <div class="flex-1">
+            <div class="info">
+                <p id="score"></p>
+                <p>Next:</p>
+                <canvas id="next"></canvas>
+                <div class="flex-row">
+                    <p class="flex-1">Columns</p>
+                    <input class="flex-1" id="columns" type="number">
+                </div>
+                <div class="flex-row">
+                    <input class="flex-1" id="restart" type="button" value="Restart">
+                    <input class="flex-1" id="random" type="button" value="Random">
+                </div>
+                <a href="https://www.sergiosoriano.com">www.sergiosoriano.com</a>
+            </div>
+        </div>
+
+        <div class="flex-2 board">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="flex-1">
+
+        </div>
+
+
     </div>
 
 </body>
