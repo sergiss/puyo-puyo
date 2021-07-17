@@ -206,7 +206,7 @@ window.onload = function() {
                     }
                 } else {
                     let maxScore = 1000;
-                    updateTime = 1.0 - Math.min(score, maxScore) * 0.9 / maxScore; // Increase speed
+                    updateTime = 1.0 - Math.min(score, maxScore) * 0.99 / maxScore; // Increase speed
                     updateUI();
                 }
 
