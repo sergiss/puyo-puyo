@@ -10,7 +10,6 @@ var Pair = function() {
     this.rotation = 0;
 
     this.render = function(ctx, cw, ch, colors) {
-
         const { a, b } = this;
 
         let r1 = cw * 0.5;
@@ -31,7 +30,6 @@ var Pair = function() {
     }
 
     this.moveX = function(grid, v) {
-
         const { a, b } = this;
 
         let x1 = a.x + v;
@@ -120,6 +118,18 @@ var Pair = function() {
         b.x = x2;
         b.y = y2;
 
+    }
+
+    this.clone = function() {
+        let tmp = new Pair();
+        tmp.a.x = this.a.x;
+        tmp.a.y = this.a.y;
+        tmp.a.color = this.a.color;
+        tmp.b.x = this.b.x;
+        tmp.b.y = this.b.y;
+        tmp.b.color = this.b.color;
+        tmp.rotation = this.rotation;
+        return tmp;
     }
 
 }

@@ -37,6 +37,101 @@ var Grid = function(cols, rows) {
         }
     }
 
+    this.findNeighbors = function(col, row, callback) {
+
+
+        let idx = col * this.rows + row;
+        let color = this.getCellIndex(idx);
+
+        if (color > -1) {
+
+            let resultList = [idx];
+            let visitedList = [idx];
+            let queue = [{
+                x: col,
+                y: row
+            }];
+
+            do {
+
+                let v = queue.shift();
+                // up
+                if (v.y > 0) {
+                    idx = v.x * this.rows + v.y - 1;
+                    if (!visitedList.includes(idx)) {
+                        visitedList.push(idx);
+                        if (this.getCellIndex(idx) == color) {
+                            resultList.push(idx);
+                            queue.push({
+                                x: v.x,
+                                y: v.y - 1
+                            });
+                        }
+                    }
+                }
+
+                // down
+                if (v.y + 1 < this.rows) {
+                    idx = v.x * this.rows + v.y + 1;
+                    if (!visitedList.includes(idx)) {
+                        visitedList.push(idx);
+                        if (this.getCellIndex(idx) == color) {
+                            resultList.push(idx);
+                            queue.push({
+                                x: v.x,
+                                y: v.y + 1
+                            });
+                        }
+                    }
+                }
+
+                // left
+                if (v.x > 0) {
+                    idx = (v.x - 1) * this.rows + v.y;
+                    if (!visitedList.includes(idx)) {
+                        visitedList.push(idx);
+                        if (this.getCellIndex(idx) == color) {
+                            resultList.push(idx);
+                            queue.push({
+                                x: v.x - 1,
+                                y: v.y
+                            });
+                        }
+                    }
+                }
+
+                // right
+                if (v.x + 1 < this.cols) {
+                    idx = (v.x + 1) * this.rows + v.y;
+                    if (!visitedList.includes(idx)) {
+                        visitedList.push(idx);
+                        if (this.getCellIndex(idx) == color) {
+                            resultList.push(idx);
+                            queue.push({
+                                x: v.x + 1,
+                                y: v.y
+                            });
+                        }
+                    }
+                }
+
+            } while (queue.length > 0);
+
+            callback(resultList);
+
+        }
+
+    }
+
+    this.clone = function() {
+        let tmp = new Grid(this.cols, this.rows);
+        let n = this.cols * this.rows;
+        for (let i = 0; i < n; ++i) {
+            tmp.data[i] = this.data[i];
+        }
+        return tmp;
+    }
+
     this.clear();
 }
 

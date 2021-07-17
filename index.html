@@ -51,7 +51,8 @@
         width: 175px;
     }
     
-    .info p {
+    .info p,
+    label {
         float: left;
         width: 100%;
         margin: 5px 0px;
@@ -64,17 +65,19 @@
     .info canvas {
         margin: 0px;
         padding: 0px;
-        width: 100%;
+        width: 98%;
         height: 100px;
         border-radius: 15px;
         border-style: solid;
         border-color: #192d8d;
     }
     
-    .info div * {
+    .info div *,
+    input,
+    label {
         width: 100%;
-        font-size: 20px;
-        margin: 2px 4px 0px 0px;
+        font-size: 19px;
+        margin: 2px 2px 0px 0px;
         padding: 0px;
     }
     
@@ -103,8 +106,14 @@
     a:hover,
     a:focus,
     a:active {
+        padding-top: 20px;
         text-decoration: none;
         color: white;
+    }
+    
+    .checkboxes {
+        display: flex;
+        vertical-align: middle;
     }
 </style>
 
@@ -117,14 +126,17 @@
                 <p id="score"></p>
                 <p>Next:</p>
                 <canvas id="next"></canvas>
+                <br><br>
+                <input id="restart" type="button" value="Restart">
                 <div class="flex-row">
                     <p class="flex-1">Columns</p>
                     <input class="flex-1" id="columns" type="number">
                 </div>
                 <div class="flex-row">
-                    <input class="flex-1" id="restart" type="button" value="Restart">
+                    <label class="flex-1 checkboxes"><input type="checkbox" id="cpu" checked=true> CPU </label>
                     <input class="flex-1" id="random" type="button" value="Random">
                 </div>
+                <br>
                 <a href="https://www.sergiosoriano.com">www.sergiosoriano.com</a>
             </div>
         </div>

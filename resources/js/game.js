@@ -4,12 +4,15 @@
 
 import Pair from "./pair.js";
 import Grid from "./grid.js";
+import AI from "./ai.js";
 
 "use strict";
 
 const CLEAR_COLOR = "#e1e1e1";
 
 window.onload = function() {
+
+    let ai = new AI();
 
     let colors = ["#2d89ef", "#ffc40d", "#ee1111", "#00a300", "#7e3878", "#1d1d1d"];
 
@@ -18,12 +21,17 @@ window.onload = function() {
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
 
+    let cpu = document.getElementById("cpu").checked;
+    document.getElementById("cpu").addEventListener("change", function(e) {
+        cpu = this.checked;
+    });
+
     let space, left, right, down;
     let tLeft = 0,
         tRight = 0,
         tDown = 0;
-
     document.addEventListener('keydown', (e) => {
+        if (cpu) return;
         switch (e.code) {
             case "ArrowLeft":
                 left = true;
@@ -38,6 +46,7 @@ window.onload = function() {
     });
 
     document.addEventListener('keyup', (e) => {
+        if (cpu) return;
         switch (e.code) {
             case "Space":
                 space = true;
@@ -121,15 +130,16 @@ window.onload = function() {
                 tRight += dt;
             }
 
-            if (down) {
+            if (down || cpu) {
                 if (tDown == 0 || tDown > 0.3) {
                     if (!pair.moveDown(grid)) {
                         grid.setCell(pair.a.x, pair.a.y, pair.a.color);
                         grid.setCell(pair.b.x, pair.b.y, pair.b.color);
                         pair = null;
                     }
+                    if (cpu) tDown = 0.15;
                 }
-                tDown += tDown;
+                tDown += dt;
             }
         }
 
@@ -163,90 +173,15 @@ window.onload = function() {
                 for (let j = 0; j < grid.rows; ++j) {
                     for (let i = 0; i < grid.cols; ++i) {
 
-                        let idx = i * grid.rows + j;
-                        let color = grid.getCellIndex(idx);
-
-                        if (color > -1) {
-
-                            let resultList = [idx];
-                            let visitedList = [idx];
-                            let queue = [{
-                                x: i,
-                                y: j
-                            }];
-
-                            do {
-
-                                let v = queue.shift();
-                                // up
-                                if (v.y - 1 > -1) {
-                                    idx = v.x * grid.rows + v.y - 1;
-                                    if (!visitedList.includes(idx)) {
-                                        visitedList.push(idx);
-                                        if (grid.getCellIndex(idx) == color) {
-                                            resultList.push(idx);
-                                            queue.push({
-                                                x: v.x,
-                                                y: v.y - 1
-                                            });
-                                        }
-                                    }
-                                }
-
-                                // down
-                                if (v.y + 1 < grid.rows) {
-                                    idx = v.x * grid.rows + v.y + 1;
-                                    if (!visitedList.includes(idx)) {
-                                        visitedList.push(idx);
-                                        if (grid.getCellIndex(idx) == color) {
-                                            resultList.push(idx);
-                                            queue.push({
-                                                x: v.x,
-                                                y: v.y + 1
-                                            });
-                                        }
-                                    }
-                                }
-
-                                // left
-                                if (v.x - 1 > -1) {
-                                    idx = (v.x - 1) * grid.rows + v.y;
-                                    if (!visitedList.includes(idx)) {
-                                        visitedList.push(idx);
-                                        if (grid.getCellIndex(idx) == color) {
-                                            resultList.push(idx);
-                                            queue.push({
-                                                x: v.x - 1,
-                                                y: v.y
-                                            });
-                                        }
-                                    }
-                                }
-
-                                // right
-                                if (v.x + 1 < grid.cols) {
-                                    idx = (v.x + 1) * grid.rows + v.y;
-                                    if (!visitedList.includes(idx)) {
-                                        visitedList.push(idx);
-                                        if (grid.getCellIndex(idx) == color) {
-                                            resultList.push(idx);
-                                            queue.push({
-                                                x: v.x + 1,
-                                                y: v.y
-                                            });
-                                        }
-                                    }
-                                }
-                            } while (queue.length > 0);
-
-                            if (resultList.length > 3) {
-                                removed += resultList.length;
-                                score += resultList.length;
-                                grid.clearList(resultList);
+                        grid.findNeighbors(i, j, function(list) {
+                            if (list.length > 3) {
+                                removed += list.length;
+                                score += list.length;
+                                grid.clearList(list);
                                 // console.log(score);
                             }
+                        });
 
-                        }
                     }
                 }
 
@@ -256,6 +191,16 @@ window.onload = function() {
                             restart();
                         }
                         pair = next;
+
+                        if (cpu) {
+                            let result = ai.computeBestMove(pair, grid);
+                            pair.a.x = result.c;
+                            pair.b.x = result.c;
+                            for (let a = 0; a < result.r; ++a) {
+                                pair.rotate(grid);
+                            }
+                        }
+
                         next = new Pair();
                         updateUI();
                     }
