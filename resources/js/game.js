@@ -35,12 +35,15 @@ window.onload = function() {
         switch (e.code) {
             case "ArrowLeft":
                 left = true;
+                e.preventDefault();
                 break;
             case "ArrowRight":
                 right = true;
+                e.preventDefault();
                 break;
             case "ArrowDown":
                 down = true;
+                e.preventDefault();
                 break;
         }
     });
@@ -50,21 +53,24 @@ window.onload = function() {
         switch (e.code) {
             case "Space":
                 space = true;
+                e.preventDefault();
                 break;
             case "ArrowLeft":
                 left = false;
                 tLeft = 0;
+                e.preventDefault();
                 break;
             case "ArrowRight":
                 right = false;
                 tRight = 0;
+                e.preventDefault();
                 break;
             case "ArrowDown":
                 down = false;
                 tDown = 0;
+                e.preventDefault();
                 break;
         }
-        e.preventDefault();
     });
 
     let lastTime = 0;
