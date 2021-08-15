@@ -30,7 +30,7 @@ window.onload = function() {
     let tLeft = 0,
         tRight = 0,
         tDown = 0;
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', function(e) {
         if (cpu) return;
         switch (e.code) {
             case "ArrowLeft":
@@ -48,7 +48,7 @@ window.onload = function() {
         }
     });
 
-    document.addEventListener('keyup', (e) => {
+    document.addEventListener('keyup', function(e) {
         if (cpu) return;
         switch (e.code) {
             case "Space":
