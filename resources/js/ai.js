@@ -43,7 +43,7 @@ var AI = function() {
 
                 // update result
                 if (result == null || result.rate < rate) {
-                    console.log(rate);
+                    // console.log(rate);
                     result = {
                         move: {
                             c: i,
