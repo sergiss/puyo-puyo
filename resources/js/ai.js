@@ -56,8 +56,7 @@ var AI = function() {
             }
 
         }
-        console.log();
-
+    
         return result.move;
 
     }
